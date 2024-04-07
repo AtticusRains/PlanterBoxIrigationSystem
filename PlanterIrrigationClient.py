@@ -5,7 +5,7 @@ from time import sleep
 def water_plants(client, userdata, msg):
     print('will it rain? ' + str(msg.payload.decode("utf-8")))
     valve = gpiozero.DigitalOutputDevice(
-        pin=2,
+        pin=26,
         active_high=True,
         initial_value=False
     )
