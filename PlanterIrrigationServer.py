@@ -1,3 +1,4 @@
+from time import sleep
 import requests
 import paho.mqtt.client as mqtt
 import schedule
@@ -21,12 +22,13 @@ def water_plants(client):
    info.wait_for_publish()
 
 
-def __main__():
-    client = mqtt.Client('PlanterIrrigationServer')
+if __name__ == '__main__':
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,'PlanterIrrigationServer')
     client.on_publish = on_publish
     client.connect('127.0.0.1', 1883)
 
     schedule.every().day.at('06:00').do(water_plants(client))
-
-
+    while True:
+        schedule.run_pending()
+        sleep(100)
 
