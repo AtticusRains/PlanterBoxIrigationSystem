@@ -13,13 +13,14 @@ def on_publish(client, userdata, mid):
 
 def water_plants(client):
    print("Watering plants...")
-   msg = will_it_rain()
-   info = client.publish(
-       topic="irrigation/start_watering",
-       payload=msg.encode('utf-8'),
-       qos=0
-   )
-   info.wait_for_publish()
+   if will_it_rain():
+       msg = "{start_watering: true, duration: 600}"
+       info = client.publish(
+           topic="irrigation/start_watering",
+           payload=msg.encode('utf-8'),
+           qos=0
+       )
+       info.wait_for_publish()
 
 
 if __name__ == '__main__':

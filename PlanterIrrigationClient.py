@@ -1,18 +1,21 @@
 import paho.mqtt.client as mqtt
 import gpiozero
+import json
 from time import sleep
 
 
 def water_plants(client, userdata, msg):
-    print('will it rain? ' + str(msg.payload.decode("utf-8")))
-    valve = gpiozero.DigitalOutputDevice(
-        pin=26,
-        active_high=True,
-        initial_value=False
-    )
-    valve.on()
-    sleep(900)
-    valve.off()
+    message = json.loads(msg.payload)
+    if message['water_plants'] == True:
+        duration = message['duration']
+        valve = gpiozero.DigitalOutputDevice(
+            pin=26,
+            active_high=True,
+            initial_value=False
+        )
+        valve.on()
+        sleep(duration)
+        valve.off()
 
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, 'PlanterIrrigationServer')
